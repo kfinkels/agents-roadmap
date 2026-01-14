@@ -82,6 +82,9 @@ def init_database(db_name='customer_support.db'):
     VALUES (?, ?, ?, ?, ?, ?, ?)
     ''', orders)
 
+    conn.commit()
+    conn.close()
+
 
 # Interactive Database Explorer
 def explore_database():
