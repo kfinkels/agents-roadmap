@@ -4,79 +4,87 @@ from typing import Any, Dict, List
 
 
 # =============================================================================
-# INVENTORY TOOL DECLARATIONS (for LiteLLM/Claude)
+# INVENTORY TOOL DECLARATIONS (for OpenAI-compatible API / z.ai)
 # =============================================================================
 
 INVENTORY_TOOLS = [
     {
-        "type": "custom", 
-        "name": "check_stock",
-        "description": "Check current stock level for a specific product. Returns stock quantity, reorder point, stock status, and supplier information.",
-        "input_schema": {  
-            "type": "object",
-            "properties": {
-                "product_id": {
-                    "type": "string",
-                    "description": "Product ID (e.g., PROD001)"
-                }
-            },
-            "required": ["product_id"]
+        "type": "function",
+        "function": {
+            "name": "check_stock",
+            "description": "Check current stock level for a specific product. Returns stock quantity, reorder point, stock status, and supplier information.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "product_id": {
+                        "type": "string",
+                        "description": "Product ID (e.g., PROD001)"
+                    }
+                },
+                "required": ["product_id"]
+            }
         }
     },
     {
-        "type": "custom",
-        "name": "search_inventory",
-        "description": "Search inventory by category or find low stock items. Can filter by category (Electronics, Office Supplies, Furniture) and/or show only items below reorder point.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "category": {
-                    "type": "string",
-                    "description": "Filter by product category: 'Electronics', 'Office Supplies', or 'Furniture'. Leave empty to search all categories."
-                },
-                "low_stock_only": {
-                    "type": "boolean",
-                    "description": "If true, only return items where current stock is at or below the reorder point. Default is false."
+        "type": "function",
+        "function": {
+            "name": "search_inventory",
+            "description": "Search inventory by category or find low stock items. Can filter by category (Electronics, Office Supplies, Furniture) and/or show only items below reorder point.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "category": {
+                        "type": "string",
+                        "description": "Filter by product category: 'Electronics', 'Office Supplies', or 'Furniture'. Leave empty to search all categories."
+                    },
+                    "low_stock_only": {
+                        "type": "boolean",
+                        "description": "If true, only return items where current stock is at or below the reorder point. Default is false."
+                    }
                 }
             }
         }
     },
     {
-        "type": "custom",
-        "name": "get_sales_trend",
-        "description": "Get sales trend analysis and stockout prediction for a product. Returns last 7 days of sales data, average daily sales, trend direction, and estimated days until stockout. Includes a recommendation on whether to reorder.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "product_id": {
-                    "type": "string",
-                    "description": "Product ID (e.g., PROD002)"
-                }
-            },
-            "required": ["product_id"]
+        "type": "function",
+        "function": {
+            "name": "get_sales_trend",
+            "description": "Get sales trend analysis and stockout prediction for a product. Returns last 7 days of sales data, average daily sales, trend direction, and estimated days until stockout. Includes a recommendation on whether to reorder.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "product_id": {
+                        "type": "string",
+                        "description": "Product ID (e.g., PROD002)"
+                    }
+                },
+                "required": ["product_id"]
+            }
         }
     },
     {
-        "type": "custom",
-        "name": "create_purchase_order",
-        "description": "Create a purchase order to restock a product. This will generate a PO with the supplier, calculate costs, and track the order. Use this when a product needs to be restocked.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "product_id": {
-                    "type": "string",
-                    "description": "Product ID to reorder (e.g., PROD002)"
+        "type": "function",
+        "function": {
+            "name": "create_purchase_order",
+            "description": "Create a purchase order to restock a product. This will generate a PO with the supplier, calculate costs, and track the order. Use this when a product needs to be restocked.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "product_id": {
+                        "type": "string",
+                        "description": "Product ID to reorder (e.g., PROD002)"
+                    },
+                    "quantity": {
+                        "type": "integer",
+                        "description": "Number of units to order. Consider average daily sales and lead time (5-7 days) when deciding quantity."
+                    },
+                    "reason": {
+                        "type": "string",
+                        "description": "Reason for the purchase order (e.g., 'Low stock - high demand', 'Approaching stockout', 'Routine reorder')"
+                    }
                 },
-                "quantity": {
-                    "type": "integer",
-                    "description": "Number of units to order. Consider average daily sales and lead time (5-7 days) when deciding quantity."
-                },
-                "reason": {
-                    "type": "string",
-                    "description": "Reason for the purchase order (e.g., 'Low stock - high demand', 'Approaching stockout', 'Routine reorder')"
-                }
-            },
-            "required": ["product_id", "quantity", "reason"]
+                "required": ["product_id", "quantity", "reason"]
+            }
         }
     }
 ]
