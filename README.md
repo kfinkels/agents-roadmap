@@ -1,6 +1,6 @@
 # Agents Roadmap
 
-A comprehensive exploration of AI agent architectures using Anthropic's Claude API.
+A comprehensive exploration of AI agent architectures using z.ai's LLM API.
 
 ## Overview
 
@@ -32,7 +32,19 @@ agents-roadmap/
 
 - Python 3.8+
 - Jupyter Notebook or JupyterLab
-- Anthropic API access
+- z.ai API access
+
+### Get Your z.ai API Key
+
+1. Go to [z.ai API Key Management](https://z.ai/manage-apikey/apikey-list)
+2. Create a new API key
+3. Copy the key for use in the `.env` file
+
+### Available Models
+
+See the full model list and pricing at: [z.ai Pricing](https://docs.z.ai/guides/overview/pricing)
+
+We use **GLM-4.6V-Flash** which is free.
 
 ### Installation
 
@@ -44,7 +56,7 @@ agents-roadmap/
 
 2. Install dependencies:
    ```bash
-   pip install anthropic jupyter
+   pip install openai python-dotenv jupyterlab
    ```
 
 3. Set up environment variables:
@@ -52,20 +64,22 @@ agents-roadmap/
    cp notebooks/.env_example notebooks/.env
    ```
 
-   Edit `notebooks/.env` with your API credentials:
-   - `ANTHROPIC_BASE_URL`: Your API endpoint
-   - `ANTHROPIC_AUTH_TOKEN`: Your API authentication token
-   - `ANTHROPIC_MODEL`: The Claude model to use
+   Edit `notebooks/.env` with your z.ai credentials:
+   ```
+   ZAI_BASE_URL=https://api.z.ai/api/paas/v4
+   ZAI_API_KEY=<your-api-key>
+   ZAI_MODEL=GLM-4.6V-Flash
+   ```
 
 4. Launch Jupyter:
    ```bash
-   jupyter notebook notebooks/
+   jupyter labshou
    ```
 
 ## Notebook Series
 
 ### 1. Simple Agent
-Introduction to basic agent architecture with direct prompting.
+Introduction to basic agent architecture with direct prompting and tool use.
 
 ### 2. ReAct Agent
 Implementation of the ReAct pattern where agents reason about actions before taking them.
@@ -85,7 +99,7 @@ Conclusions and best practices for choosing agent architectures.
 ## Tools and Databases
 
 The project includes sample databases and tools for:
-- **Customer Support**: Query and manage customer support tickets
+- **Customer Support**: Query and manage customer orders and refunds
 - **Inventory Management**: Track and manage product inventory
 
 These tools are used throughout the notebooks to demonstrate real-world agent applications.
