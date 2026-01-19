@@ -132,16 +132,16 @@ def lookup_customer(customer_id: str) -> Dict[str, Any]:
     """Look up customer information by ID"""
     conn = sqlite3.connect('customer_support.db')
     cursor = conn.cursor()
-    
+
     cursor.execute('''
-    SELECT customer_id, name, email, tier, balance 
-    FROM customers 
+    SELECT customer_id, name, email, tier, balance
+    FROM customers
     WHERE customer_id = ?
     ''', (customer_id,))
-    
+
     row = cursor.fetchone()
     conn.close()
-    
+
     if row:
         return {
             "status": "found",
@@ -154,6 +154,38 @@ def lookup_customer(customer_id: str) -> Dict[str, Any]:
             }
         }
     return {"status": "not_found", "message": "Customer not found"}
+
+
+def lookup_customer_by_name(name: str) -> Dict[str, Any]:
+    """Look up customer information by name (case-insensitive partial match)"""
+    conn = sqlite3.connect('customer_support.db')
+    cursor = conn.cursor()
+
+    cursor.execute('''
+    SELECT customer_id, name, email, tier, balance
+    FROM customers
+    WHERE LOWER(name) LIKE LOWER(?)
+    ''', (f'%{name}%',))
+
+    rows = cursor.fetchall()
+    conn.close()
+
+    if rows:
+        customers = []
+        for row in rows:
+            customers.append({
+                "customer_id": row[0],
+                "name": row[1],
+                "email": row[2],
+                "tier": row[3],
+                "balance": row[4]
+            })
+        return {
+            "status": "found",
+            "count": len(customers),
+            "customers": customers
+        }
+    return {"status": "not_found", "message": "No customers found with that name"}
 
 
 def check_order_status(order_id: str) -> Dict[str, Any]:

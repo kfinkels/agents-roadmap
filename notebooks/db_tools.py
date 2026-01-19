@@ -20,6 +20,23 @@ tools = [
     {
         "type": "function",
         "function": {
+            "name": "lookup_customer_by_name",
+            "description": "Look up customer information by name. Use this when you only have a customer's name and need to find their customer ID.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "The customer's name (or partial name) to search for"
+                    }
+                },
+                "required": ["name"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
             "name": "check_order_status",
             "description": "Check the status and details of a specific order",
             "parameters": {
