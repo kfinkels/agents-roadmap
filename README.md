@@ -106,8 +106,4 @@ These tools are used throughout the notebooks to demonstrate real-world agent ap
 
 ## License
 
-[Add your license information here]
-
-## Contributing
-
-[Add contribution guidelines here]
+MIT - Use this for your own workshops!
